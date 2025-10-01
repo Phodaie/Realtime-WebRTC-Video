@@ -29,10 +29,10 @@ export default function Home() {
     height: 720,
     frameRate: 30
   });
-  const [isSystemInstructionsOpen, setIsSystemInstructionsOpen] = useState(true);
-  const [isVideoSettingsOpen, setIsVideoSettingsOpen] = useState(true);
-  const [isQuickStartOpen, setIsQuickStartOpen] = useState(true);
-  const [isSessionOverviewOpen, setIsSessionOverviewOpen] = useState(true);
+  const [isSystemInstructionsOpen, setIsSystemInstructionsOpen] = useState(false);
+  const [isVideoSettingsOpen, setIsVideoSettingsOpen] = useState(false);
+  const [isQuickStartOpen, setIsQuickStartOpen] = useState(false);
+  const [isSessionOverviewOpen, setIsSessionOverviewOpen] = useState(false);
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
