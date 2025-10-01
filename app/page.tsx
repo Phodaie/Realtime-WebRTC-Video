@@ -24,6 +24,11 @@ export default function Home() {
   });
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [instructions, setInstructions] = useState('You are a helpful assistant. When asked to look at something, describe what you see in the image.');
+  const [videoConstraints, setVideoConstraints] = useState({
+    width: 1280,
+    height: 720,
+    frameRate: 30
+  });
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
@@ -47,7 +52,12 @@ export default function Home() {
 
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
-        video: true,
+        video: {
+          width: { ideal: videoConstraints.width },
+          height: { ideal: videoConstraints.height },
+          frameRate: { ideal: videoConstraints.frameRate },
+          facingMode: 'user',
+        },
       });
 
       if (localVideoRef.current) {
@@ -332,6 +342,11 @@ export default function Home() {
         : 'Run a permissions test to prepare media tracks.',
     },
     {
+      label: 'Video Quality',
+      value: `${videoConstraints.width}×${videoConstraints.height} @ ${videoConstraints.frameRate}fps`,
+      detail: hasVideo ? 'Active video stream settings.' : 'Configured for next session.',
+    },
+    {
       label: 'Voice',
       value: 'Alloy',
       detail: 'Optimized for natural, fluid responses.',
@@ -533,6 +548,54 @@ export default function Home() {
                 />
                 <p className="text-xs text-white/40">
                   {isConnected ? 'Instructions are locked while the session is live.' : 'Adjust the prompt to tailor responses before connecting.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur">
+              <div className="border-b border-white/10 px-6 py-5">
+                <h2 className="text-lg font-semibold text-white">Video Settings</h2>
+                <p className="text-sm text-white/50">Adjust video quality before testing permissions.</p>
+              </div>
+              <div className="space-y-4 px-6 py-5">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-white/70 mb-2">Resolution</label>
+                    <select
+                      value={`${videoConstraints.width}x${videoConstraints.height}`}
+                      onChange={(e) => {
+                        const [width, height] = e.target.value.split('x').map(Number);
+                        setVideoConstraints(prev => ({ ...prev, width, height }));
+                      }}
+                      disabled={isConnected || hasAnyMedia}
+                      className="w-full rounded-xl border border-white/10 bg-slate-950/60 px-3 py-2 text-sm text-white focus:border-indigo-400 focus:outline-none disabled:opacity-50"
+                    >
+                      <option value="640x480">640×480 (VGA)</option>
+                      <option value="1280x720">1280×720 (HD)</option>
+                      <option value="1920x1080">1920×1080 (FHD)</option>
+                      <option value="2560x1440">2560×1440 (QHD)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-white/70 mb-2">Frame Rate</label>
+                    <select
+                      value={videoConstraints.frameRate}
+                      onChange={(e) => setVideoConstraints(prev => ({ ...prev, frameRate: Number(e.target.value) }))}
+                      disabled={isConnected || hasAnyMedia}
+                      className="w-full rounded-xl border border-white/10 bg-slate-950/60 px-3 py-2 text-sm text-white focus:border-indigo-400 focus:outline-none disabled:opacity-50"
+                    >
+                      <option value={15}>15 FPS</option>
+                      <option value={24}>24 FPS</option>
+                      <option value={30}>30 FPS</option>
+                      <option value={60}>60 FPS</option>
+                    </select>
+                  </div>
+                </div>
+                <p className="text-xs text-white/40">
+                  {isConnected || hasAnyMedia 
+                    ? 'Video settings are locked once media is active. Stop the session to adjust.'
+                    : 'Higher settings may impact performance. Test with your camera capabilities.'
+                  }
                 </p>
               </div>
             </div>
