@@ -365,9 +365,7 @@ export default function Home() {
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-white/50">Realtime Studio</p>
             <h1 className="text-2xl font-semibold text-white sm:text-3xl">OpenAI WebRTC Console</h1>
-            <p className="mt-2 max-w-xl text-sm text-white/60">
-              Stream video and audio into OpenAI Realtime models with a polished operator console designed for demos and production trials.
-            </p>
+            
           </div>
           <div className={`flex items-center gap-3 rounded-full px-4 py-2 text-sm font-semibold backdrop-blur ${currentStatus.badge}`}>
             <span className="text-xl">{currentStatus.icon}</span>
