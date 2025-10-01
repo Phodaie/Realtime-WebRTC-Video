@@ -29,6 +29,10 @@ export default function Home() {
     height: 720,
     frameRate: 30
   });
+  const [isSystemInstructionsOpen, setIsSystemInstructionsOpen] = useState(true);
+  const [isVideoSettingsOpen, setIsVideoSettingsOpen] = useState(true);
+  const [isQuickStartOpen, setIsQuickStartOpen] = useState(true);
+  const [isSessionOverviewOpen, setIsSessionOverviewOpen] = useState(true);
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
@@ -533,11 +537,22 @@ export default function Home() {
 
           <aside className="space-y-6">
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur">
-              <div className="border-b border-white/10 px-6 py-5">
-                <h2 className="text-lg font-semibold text-white">System Instructions</h2>
-                <p className="text-sm text-white/50">Configure the assistant’s baseline behavior before you connect.</p>
-              </div>
-              <div className="space-y-4 px-6 py-5">
+              <button
+                onClick={() => setIsSystemInstructionsOpen(!isSystemInstructionsOpen)}
+                className="w-full border-b border-white/10 px-6 py-5 text-left transition-colors hover:bg-white/5"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">System Instructions</h2>
+                    <p className="text-sm text-white/50">Configure the assistant's baseline behavior before you connect.</p>
+                  </div>
+                  <span className="text-white/60 transition-transform duration-200" style={{ transform: isSystemInstructionsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    ▼
+                  </span>
+                </div>
+              </button>
+              {isSystemInstructionsOpen && (
+                <div className="space-y-4 px-6 py-5">
                 <textarea
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
@@ -549,15 +564,27 @@ export default function Home() {
                 <p className="text-xs text-white/40">
                   {isConnected ? 'Instructions are locked while the session is live.' : 'Adjust the prompt to tailor responses before connecting.'}
                 </p>
-              </div>
+                </div>
+              )}
             </div>
 
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur">
-              <div className="border-b border-white/10 px-6 py-5">
-                <h2 className="text-lg font-semibold text-white">Video Settings</h2>
-                <p className="text-sm text-white/50">Adjust video quality before testing permissions.</p>
-              </div>
-              <div className="space-y-4 px-6 py-5">
+              <button
+                onClick={() => setIsVideoSettingsOpen(!isVideoSettingsOpen)}
+                className="w-full border-b border-white/10 px-6 py-5 text-left transition-colors hover:bg-white/5"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">Video Settings</h2>
+                    <p className="text-sm text-white/50">Adjust video quality before testing permissions.</p>
+                  </div>
+                  <span className="text-white/60 transition-transform duration-200" style={{ transform: isVideoSettingsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    ▼
+                  </span>
+                </div>
+              </button>
+              {isVideoSettingsOpen && (
+                <div className="space-y-4 px-6 py-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-white/70 mb-2">Resolution</label>
@@ -597,15 +624,27 @@ export default function Home() {
                     : 'Higher settings may impact performance. Test with your camera capabilities.'
                   }
                 </p>
-              </div>
+                </div>
+              )}
             </div>
 
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-yellow-500/15 text-amber-50">
-              <div className="border-b border-white/10 px-6 py-5">
-                <h2 className="text-lg font-semibold">Quick Start Checklist</h2>
-                <p className="text-sm text-amber-100/80">Follow these steps to get a clean, reliable realtime demo.</p>
-              </div>
-              <ol className="space-y-4 px-6 py-5 text-sm">
+              <button
+                onClick={() => setIsQuickStartOpen(!isQuickStartOpen)}
+                className="w-full border-b border-white/10 px-6 py-5 text-left transition-colors hover:bg-amber-500/10"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold">Quick Start Checklist</h2>
+                    <p className="text-sm text-amber-100/80">Follow these steps to get a clean, reliable realtime demo.</p>
+                  </div>
+                  <span className="text-amber-100/60 transition-transform duration-200" style={{ transform: isQuickStartOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    ▼
+                  </span>
+                </div>
+              </button>
+              {isQuickStartOpen && (
+                <ol className="space-y-4 px-6 py-5 text-sm">
                 <li className="flex gap-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 text-sm font-semibold">1</span>
                   <div>
@@ -628,14 +667,26 @@ export default function Home() {
                   </div>
                 </li>
               </ol>
+              )}
             </div>
 
             <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur">
-              <div className="border-b border-white/10 px-6 py-5">
-                <h2 className="text-lg font-semibold text-white">Session Overview</h2>
-                <p className="text-sm text-white/50">Key realtime indicators update as you interact with the model.</p>
-              </div>
-              <div className="space-y-3 px-6 py-5">
+              <button
+                onClick={() => setIsSessionOverviewOpen(!isSessionOverviewOpen)}
+                className="w-full border-b border-white/10 px-6 py-5 text-left transition-colors hover:bg-white/5"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">Session Overview</h2>
+                    <p className="text-sm text-white/50">Key realtime indicators update as you interact with the model.</p>
+                  </div>
+                  <span className="text-white/60 transition-transform duration-200" style={{ transform: isSessionOverviewOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    ▼
+                  </span>
+                </div>
+              </button>
+              {isSessionOverviewOpen && (
+                <div className="space-y-3 px-6 py-5">
                 {connectionSummary.map((item) => (
                   <div
                     key={item.label}
@@ -646,7 +697,8 @@ export default function Home() {
                     <p className="text-xs text-white/50">{item.detail}</p>
                   </div>
                 ))}
-              </div>
+                </div>
+              )}
             </div>
           </aside>
         </div>
